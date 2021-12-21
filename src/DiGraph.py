@@ -7,6 +7,9 @@ class DiGraph(GraphInterface):
         self.nodes = {}
         self.edges = {}
         self.SizeOfEdge = 0
+        self.list_nodes = []
+        self.list_edges = []
+
         self.mc = 0
 
     def v_size(self) -> int:
@@ -17,6 +20,12 @@ class DiGraph(GraphInterface):
 
     def get_all_v(self) -> dict:
         return self.nodes
+
+    def get_list_nodes(self) -> list:
+        return self.list_nodes
+
+    def get_list_edges(self) -> list:
+        return self.list_edges
 
     def all_in_edges_of_node(self, id1: int) -> dict:
         ans = {}
@@ -49,6 +58,7 @@ class DiGraph(GraphInterface):
             self.edges[id1] = {id2: weight}
             self.SizeOfEdge += 1
 
+        self.list_edges.append({'src' :id1 , 'dest' : id2 , 'w': weight})
         self.mc = self.mc + 1
         return True
 
@@ -58,6 +68,7 @@ class DiGraph(GraphInterface):
         else:
             self.nodes[node_id] = pos
 
+        self.list_nodes.append({'id': node_id, 'pos': pos})
         self.mc = self.mc + 1
         return True
 
