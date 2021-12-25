@@ -1,4 +1,5 @@
 from src.GraphInterface import GraphInterface
+from src.Node import Node
 
 
 class DiGraph(GraphInterface):
@@ -9,7 +10,6 @@ class DiGraph(GraphInterface):
         self.SizeOfEdge = 0
         self.list_nodes = []
         self.list_edges = []
-
         self.mc = 0
 
     def v_size(self) -> int:
@@ -66,7 +66,7 @@ class DiGraph(GraphInterface):
         if node_id in self.nodes.keys():
             return False
         else:
-            self.nodes[node_id] = pos
+            self.nodes[node_id] = Node(node_id,pos)
 
         self.list_nodes.append({'id': node_id, 'pos': pos})
         self.mc = self.mc + 1
