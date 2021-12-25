@@ -1,3 +1,4 @@
+from src.Edge import Edge
 from src.GraphInterface import GraphInterface
 from src.Node import Node
 
@@ -55,10 +56,11 @@ class DiGraph(GraphInterface):
                 self.edges[id1][id2] = weight
                 self.SizeOfEdge += 1
         else:
-            self.edges[id1] = {id2: weight}
+            edge = Edge(id1, id2, weight)
+            self.edges[id1] = {id2: edge}
             self.SizeOfEdge += 1
 
-        self.list_edges.append({'src' :id1 , 'dest' : id2 , 'w': weight})
+        self.list_edges.append({'src': id1, 'dest': id2, 'w': weight})
         self.mc = self.mc + 1
         return True
 
@@ -66,11 +68,14 @@ class DiGraph(GraphInterface):
         if node_id in self.nodes.keys():
             return False
         else:
-            self.nodes[node_id] = Node(node_id,pos)
+            self.nodes[node_id] = Node(node_id, pos)
 
         self.list_nodes.append({'id': node_id, 'pos': pos})
         self.mc = self.mc + 1
         return True
+
+    def getnode(self, id: int) -> Node:
+        return self.nodes[id]
 
     def remove_node(self, node_id: int) -> bool:
         if node_id not in self.nodes.keys():
@@ -82,11 +87,13 @@ class DiGraph(GraphInterface):
         # remove all the edges that the node is the src
         if node_id in self.edges.keys():
             self.edges.pop(node_id)
+            self.list_edges.pop(node_id)
         # remove all the edges that the node is the dst
         for id1 in self.edges.keys():
             for id2 in self.edges[id1].keys():
                 if id2 == node_id:
                     self.edges[id1].pop(node_id)
+                    self.list_edges[id1].pop(node_id)
                     self.SizeOfEdge -= 1
 
         self.mc = self.mc + 1
@@ -99,6 +106,7 @@ class DiGraph(GraphInterface):
             return False
         else:
             self.edges[node_id1].pop(node_id2)
+            self.list_edges[node_id1].pop(node_id2)
             self.SizeOfEdge -= 1
         self.mc = self.mc + 1
         return True
