@@ -1,11 +1,19 @@
 class Node():
     def __init__(self, node_id:int,pos:tuple) -> None:
-        super().__init__()
+       # super().__init__()
         self.key = node_id
         self.weight = 1000000
         self.info = "Wight"
         self.tag = -1
         self.pos = pos
+
+    # def __init__(self, node_id:int) -> None:
+    #    #super().__init__()
+    #     self.key = node_id
+    #     self.weight = 1000000
+    #     self.info = "Wight"
+    #     self.tag = -1
+    #     self.pos = (0,0,0)
 
     def getkey(self) -> int:
         return self.key

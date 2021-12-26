@@ -48,12 +48,12 @@ class DiGraph(GraphInterface):
     def add_edge(self, id1: int, id2: int, weight: float) -> bool:
         if id1 not in self.nodes.keys() or id2 not in self.nodes.keys():
             return False
-
+        edge = Edge(id1, id2, weight)
         if id1 in self.edges.keys():
             if id2 in self.edges[id1].keys():
                 return False
             else:
-                self.edges[id1][id2] = weight
+                self.edges[id1][id2] = edge
                 self.SizeOfEdge += 1
         else:
             edge = Edge(id1, id2, weight)
@@ -75,7 +75,9 @@ class DiGraph(GraphInterface):
         return True
 
     def getnode(self, id: int) -> Node:
+        #if self.nodes[id]:
         return self.nodes[id]
+        #return None
 
     def remove_node(self, node_id: int) -> bool:
         if node_id not in self.nodes.keys():
@@ -106,7 +108,11 @@ class DiGraph(GraphInterface):
             return False
         else:
             self.edges[node_id1].pop(node_id2)
-            self.list_edges[node_id1].pop(node_id2)
+            for i in self.list_edges:
+                if i['src'] == node_id1 and i['dest'] == node_id2:
+                    self.list_edges.remove(i)
+                    break
+            # self.list_edges[node_id1].pop(node_id2)
             self.SizeOfEdge -= 1
         self.mc = self.mc + 1
         return True
