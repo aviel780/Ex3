@@ -2,6 +2,7 @@ from _ast import List
 import json
 from collections import deque
 
+from src.GUI import GUI
 from src.GraphInterface import GraphInterface
 from src.GraphAlgoInterface import GraphAlgoInterface
 from DiGraph import DiGraph
@@ -40,6 +41,7 @@ class GraphAlgo(GraphAlgoInterface):
         src.setweight(0.0)
         queue.append(src)
         while len(queue) != 0:
+            queue.sort()
             temp = queue.pop(0)
             if temp.getinfo() == "White":
                 temp.setinfo("Black")
@@ -92,26 +94,6 @@ class GraphAlgo(GraphAlgoInterface):
             return -1
         return ans
 
-    # def dfs(self, node_lst:int) -> (List[int], float):
-    #     self.reset()
-    #     stack = deque()
-    #     dfs_path = [node_lst]
-    #     dist =0
-    #     stack.append(node_lst)  # add the first node to the stack
-    #     node = self.graph.get_all_v().get(node_lst)
-    #     node.setinfo("Black")
-    #     while len(stack) != 0:
-    #         curr = stack.pop()
-    #         for neighbor in self.graph.all_out_edges_of_node(curr).keys():
-    #             nei_node = self.graph.get_all_v().get(neighbor)
-    #             if nei_node.getinfo == "Wight":
-    #                 stack.append(nei_node.get_key())
-    #                 nei_node.setinfo("Black")
-    #                 dfs_path.append(nei_node.get_key())
-    #                 dist = dist + self.get_graph().all_out_edges_of_node(curr).get(nei_node.get_key())
-    #
-    #     return dfs_path, dist
-
     def TSP(self, node_lst: List[int]) -> (List[int], float):
         al = []
         path = []
@@ -163,4 +145,5 @@ class GraphAlgo(GraphAlgoInterface):
         return center, ansdist
 
     def plot_graph(self) -> None:
+        GUI(self)
         return None

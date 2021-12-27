@@ -7,14 +7,6 @@ class Node():
         self.tag = -1
         self.pos = pos
 
-    # def __init__(self, node_id:int) -> None:
-    #    #super().__init__()
-    #     self.key = node_id
-    #     self.weight = 1000000
-    #     self.info = "Wight"
-    #     self.tag = -1
-    #     self.pos = (0,0,0)
-
     def getkey(self) -> int:
         return self.key
 
@@ -45,4 +37,23 @@ class Node():
     def setpos(self, p: tuple) -> None:
         self.pos = p
 
+    def __repr__(self):
+        return f"({self.key} , {self.pos})"
 
+    def __lt__(self, other):
+        return self.weight<other.weight
+
+    def __le__(self, other):
+        return self.weight <= other.weight
+
+    def __eq__(self, other):
+        return self.weight == other.weight
+
+    def __ne__(self, other):
+        return self.weight != other.weight
+
+    def __gt__(self, other):
+        return self.weight>other.weight
+
+    def __ge__(self, other):
+        return self.weight<=other.weight
