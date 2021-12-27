@@ -1,8 +1,5 @@
-from _ast import List
 import json
-from collections import deque
-
-from src.GUI import GUI
+import matplotlib.pyplot as plt
 from src.GraphInterface import GraphInterface
 from src.GraphAlgoInterface import GraphAlgoInterface
 from DiGraph import DiGraph
@@ -12,7 +9,7 @@ from typing import List
 
 class GraphAlgo(GraphAlgoInterface):
 
-    def __init__(self, g: DiGraph = DiGraph()) -> None:
+    def _init_(self, g: DiGraph = DiGraph()) -> None:
         self.graph = g
 
     def get_graph(self) -> GraphInterface:
@@ -24,7 +21,8 @@ class GraphAlgo(GraphAlgoInterface):
         l_nodes = data["Nodes"]
         l_edges = data["Edges"]
         for dic_nodes in l_nodes:
-            self.graph.add_node(dic_nodes['id'], dic_nodes['pos'])
+            pos = dic_nodes["pos"].split(',')
+            self.graph.add_node(dic_nodes['id'],(float(pos[0]), float(pos[1]), float(pos[2])))
         for dic_edges in l_edges:
             self.graph.add_edge(dic_edges['src'], dic_edges['dest'], dic_edges['w'])
         return True
@@ -145,5 +143,12 @@ class GraphAlgo(GraphAlgoInterface):
         return center, ansdist
 
     def plot_graph(self) -> None:
-        GUI(self)
-        return None
+        for src in self.graph.nodes.values():
+            x, y, z = src.pos
+            plt.plot(x, y, markersize=10, marker="o", color="red")
+            plt.text(x, y, str(src.key), color="blue", fontsize=12)
+
+            for dest in self.graph.edges[src.key]:
+                n_x, n_y, n_z = self.graph.nodes[dest].pos
+                plt.annotate("", xy=(x, y), xytext=(n_x, n_y), arrowprops=dict(arrowstyle="<-"))
+        plt.show()

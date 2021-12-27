@@ -1,6 +1,6 @@
 class Node():
-    def __init__(self, node_id:int,pos:tuple) -> None:
-       # super().__init__()
+    def _init_(self, node_id:int,pos:tuple) -> None:
+       # super()._init_()
         self.key = node_id
         self.weight = 1000000
         self.info = "Wight"
@@ -37,23 +37,23 @@ class Node():
     def setpos(self, p: tuple) -> None:
         self.pos = p
 
-    def __repr__(self):
+    def _repr_(self):
         return f"({self.key} , {self.pos})"
 
-    def __lt__(self, other):
+    def _lt_(self, other):
         return self.weight<other.weight
 
-    def __le__(self, other):
+    def _le_(self, other):
         return self.weight <= other.weight
 
-    def __eq__(self, other):
+    def _eq_(self, other):
         return self.weight == other.weight
 
-    def __ne__(self, other):
+    def _ne_(self, other):
         return self.weight != other.weight
 
-    def __gt__(self, other):
+    def _gt_(self, other):
         return self.weight>other.weight
 
-    def __ge__(self, other):
+    def _ge_(self, other):
         return self.weight<=other.weight

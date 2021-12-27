@@ -4,8 +4,8 @@ from src.Node import Node
 
 
 class DiGraph(GraphInterface):
-    def __init__(self) -> None:
-        super().__init__()
+    def _init_(self) -> None:
+        super()._init_()
         self.nodes = {}
         self.edges = {}
         self.SizeOfEdge = 0
