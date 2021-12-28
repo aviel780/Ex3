@@ -27,4 +27,4 @@ In the main.py class, go to main method and create a GraphAlgo by the following 
 
 
 ## UML
-
+![image](https://github.com/aviel780/Ex3/blob/master/UML_Screenshot/UML.jpg)
