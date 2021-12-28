@@ -24,3 +24,7 @@ In the main.py class, go to main method and create a GraphAlgo by the following 
 * file = '../data/A5.json' (enter a jason file you wuold like to load)
 * graph.load_from_json(file)
 * graph.plot_graph
+
+
+## UML
+
