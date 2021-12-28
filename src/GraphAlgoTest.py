@@ -13,13 +13,13 @@ class GraphAlgoTest(TestCase):
         newG = ga.get_graph()
         self.assertEqual(g, newG)
 
-    def test_load_from_json(self):
+    def test_load(self):
         g = DiGraph()
         ga = GraphAlgo()
         ga.graph = g
         self.assertTrue(ga.load_from_json('../data/A5.json'))
 
-    def test_save_to_json(self):
+    def test_save(self):
         g = DiGraph()
         ga = GraphAlgo()
         ga.graph = g

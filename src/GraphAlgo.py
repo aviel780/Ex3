@@ -34,7 +34,7 @@ class GraphAlgo(GraphAlgoInterface):
         return True
 
     def Dijkstra(self, src: Node, dest: Node):
-        shortest = 1000000
+        mostshort = float('inf')
         queue = []
         src.setweight(0.0)
         queue.append(src)
@@ -45,21 +45,21 @@ class GraphAlgo(GraphAlgoInterface):
                 temp.setinfo("Black")
                 if temp.getkey() == dest.getkey():
                     return temp.getweight()
-                for e in self.graph.all_out_edges_of_node(temp.getkey()):
-                    ed = self.graph.edges[temp.getkey()][e]
-                    no = self.graph.getnode(e)
-                    if no.info == "White":
-                        if temp.getweight() + ed.getweight() < no.getweight():
-                            no.setweight(temp.getweight() + ed.getweight())
-                            no.settag(temp.getkey())
-                        queue.append(no)
-        return shortest
+                for edg in self.graph.all_out_edges_of_node(temp.getkey()):
+                    temped = self.graph.edges[temp.getkey()][edg]
+                    tempno = self.graph.getnode(edg)
+                    if tempno.info == "White":
+                        if temp.getweight() + temped.getweight() < tempno.getweight():
+                            tempno.setweight(temp.getweight() + temped.getweight())
+                            tempno.settag(temp.getkey())
+                        queue.append(tempno)
+        return mostshort
 
     def reset(self):
         for n in self.graph.nodes.values():
             n.setinfo("White")
             n.settag(-1)
-            n.setweight(1000000)
+            n.setweight(float('inf'))
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
         ans = []
@@ -70,18 +70,18 @@ class GraphAlgo(GraphAlgoInterface):
             return (0, [])
         self.reset()
         self.Dijkstra(self.graph.getnode(id1), self.graph.getnode(id2))
-        Nsrc = self.graph.getnode(id1)
-        Ndest = self.graph.getnode(id2)
-        revers = []
-        temp = Ndest
+        nodesrc = self.graph.getnode(id1)
+        nodedest = self.graph.getnode(id2)
+        back = []
+        temp = nodedest
         while temp.gettag() != -1:
-            revers.append(temp)
+            back.append(temp)
             temp = self.graph.getnode(temp.gettag())
 
-        ans.append(Nsrc.key)
+        ans.append(nodesrc.key)
 
-        for i in range(len(revers)-1, -1, -1):
-            ans.append(revers[i].key)
+        for i in range(len(back)-1, -1, -1):
+            ans.append(back[i].key)
         self.reset()
         return (ansdist, ans)
 
@@ -94,48 +94,46 @@ class GraphAlgo(GraphAlgoInterface):
         return ans
 
     def TSP(self, node_lst: List[int]) -> (List[int], float):
-        al = []
-        path = []
-        copy = []
+        list_ans = []
+        p = []
+        sec = []
         ans = 0
         for n in node_lst:
-            copy.append(n)
-        first = copy.pop(0)
-        while len(copy) != 0:
+            sec.append(n)
+        firstvalue = sec.pop(0)
+        while len(sec) != 0:
             best = 1000000
-            for nod in copy:
-                temp = self.shortest_path_dist(first, nod)
+            for nod in sec:
+                temp = self.shortest_path_dist(firstvalue, nod)
                 if temp < best:
                     best = temp
                     Ntemp = nod
-            path = self.shortest_path(first, Ntemp)
-            path = path[1]
-            for i in range(1, len(path), 1):
-                al.append(path[i])
-            copy.remove(Ntemp)
-            first = Ntemp
-        for a in range(0, len(al)-1, 1):
-            temp = self.graph.get_edge(al[a],al[a+1]).getweight()
+            p = self.shortest_path(firstvalue, Ntemp)
+            p =  p[1]
+            for i in range(1, len( p), 1):
+                list_ans.append( p[i])
+            sec.remove(Ntemp)
+            firstvalue = Ntemp
+        for a in range(0, len(list_ans)-1, 1):
+            temp = self.graph.get_edge(list_ans[a],list_ans[a+1]).getweight()
             ans = ans +temp
-        return al,ans
+        return list_ans,ans
 
     def centerPoint(self) -> (int, float):
-        center = 0
-        magic = Node(-1, (0, 0, 0))
+        c = 0
+        ford = Node(-1, (0, 0, 0))
         ansdist = float('inf')
         for nod in self.graph.nodes.values():
-            n = nod
             self.reset()
-            self.Dijkstra(n, magic)
-            distemp = -1000000
+            self.Dijkstra(nod, ford)
             temp = float('-inf')
             for tempn in self.graph.nodes.values():
                 if tempn.getweight() > temp:
                     temp = tempn.getweight()
             if temp < ansdist:
                 ansdist = temp
-                center = nod.key
-        return center, ansdist
+                c = nod.key
+        return c, ansdist
 
     def plot_graph(self) -> None:
         for src in self.graph.nodes.values():
