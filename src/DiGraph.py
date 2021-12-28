@@ -75,9 +75,7 @@ class DiGraph(GraphInterface):
         return True
 
     def getnode(self, id: int) -> Node:
-        #if self.nodes[id]:
         return self.nodes[id]
-        #return None
 
     def remove_node(self, node_id: int) -> bool:
         if node_id not in self.nodes.keys():
@@ -85,18 +83,13 @@ class DiGraph(GraphInterface):
         else:
             # remove from nodes
             self.nodes.pop(node_id)
-
         # remove all the edges that the node is the src
         if node_id in self.edges.keys():
             self.edges.pop(node_id)
-            self.list_edges.pop(node_id)
-        # remove all the edges that the node is the dst
-        for id1 in self.edges.keys():
-            for id2 in self.edges[id1].keys():
-                if id2 == node_id:
-                    self.edges[id1].pop(node_id)
-                    self.list_edges[id1].pop(node_id)
-                    self.SizeOfEdge -= 1
+        for i in self.list_edges:
+            if i['src'] == node_id or i['dest'] == node_id:
+                self.list_edges.remove(i)
+                self.SizeOfEdge -= 1
 
         self.mc = self.mc + 1
         return True
@@ -116,3 +109,7 @@ class DiGraph(GraphInterface):
             self.SizeOfEdge -= 1
         self.mc = self.mc + 1
         return True
+
+    def get_edge(self, src :int , dest:int):
+        return self.edges[src][dest]
+

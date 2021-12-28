@@ -1,3 +1,5 @@
+import sys
+
 from DiGraph import DiGraph
 from GraphAlgo import GraphAlgo
 
@@ -44,7 +46,7 @@ def check0():
     print(g.all_out_edges_of_node(1))
     g_algo = GraphAlgo(g)
     print(g_algo.shortest_path(0, 3))
-    g_algo.plot_graph()
+    # g_algo.plot_graph()
 
 
 def check1():
@@ -105,4 +107,5 @@ def check3():
 
 
 if __name__ == '__main__':
-    check1()
+     check1()
+

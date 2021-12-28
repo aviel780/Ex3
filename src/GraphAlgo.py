@@ -1,8 +1,5 @@
-from _ast import List
 import json
-from collections import deque
-
-from src.GUI import GUI
+import matplotlib.pyplot as plt
 from src.GraphInterface import GraphInterface
 from src.GraphAlgoInterface import GraphAlgoInterface
 from DiGraph import DiGraph
@@ -24,7 +21,8 @@ class GraphAlgo(GraphAlgoInterface):
         l_nodes = data["Nodes"]
         l_edges = data["Edges"]
         for dic_nodes in l_nodes:
-            self.graph.add_node(dic_nodes['id'], dic_nodes['pos'])
+            pos = dic_nodes["pos"].split(',')
+            self.graph.add_node(dic_nodes['id'], (float(pos[0]), float(pos[1]), float(pos[2])))
         for dic_edges in l_edges:
             self.graph.add_edge(dic_edges['src'], dic_edges['dest'], dic_edges['w'])
         return True
@@ -79,10 +77,11 @@ class GraphAlgo(GraphAlgoInterface):
         while temp.gettag() != -1:
             revers.append(temp)
             temp = self.graph.getnode(temp.gettag())
-        ans.append(Nsrc)
 
-        for i in range(len(revers) - 1, 0, -1):
-            ans.append(revers[i])
+        ans.append(Nsrc.key)
+
+        for i in range(len(revers)-1, -1, -1):
+            ans.append(revers[i].key)
         self.reset()
         return (ansdist, ans)
 
@@ -98,11 +97,11 @@ class GraphAlgo(GraphAlgoInterface):
         al = []
         path = []
         copy = []
+        ans = 0
         for n in node_lst:
             copy.append(n)
         first = copy.pop(0)
-        al.append(first)
-        while len(copy) > 0:
+        while len(copy) != 0:
             best = 1000000
             for nod in copy:
                 temp = self.shortest_path_dist(first, nod)
@@ -110,40 +109,41 @@ class GraphAlgo(GraphAlgoInterface):
                     best = temp
                     Ntemp = nod
             path = self.shortest_path(first, Ntemp)
-
-            for i in range(0, len(path), 1):
+            path = path[1]
+            for i in range(1, len(path), 1):
                 al.append(path[i])
             copy.remove(Ntemp)
             first = Ntemp
-        return al
+        for a in range(0, len(al)-1, 1):
+            temp = self.graph.get_edge(al[a],al[a+1]).getweight()
+            ans = ans +temp
+        return al,ans
 
     def centerPoint(self) -> (int, float):
-        max = 0
-        min = 0
         center = 0
         magic = Node(-1, (0, 0, 0))
-        distans = 1000000
-        ass = 0
+        ansdist = float('inf')
         for nod in self.graph.nodes.values():
             n = nod
             self.reset()
             self.Dijkstra(n, magic)
             distemp = -1000000
+            temp = float('-inf')
             for tempn in self.graph.nodes.values():
-                k = tempn
-                if k.getweight() > distemp:
-                    distemp = k.getweight()
-            if distemp < distans:
-                distans = distemp
-                center = n.getkey()
-            if ass == 0:
-                min = nod.getkey()
-            if ass == self.graph.v_size() - 1:
-                max = nod.getkey()
-            ass = ass + 1
-        ansdist = self.shortest_path_dist(max, min)
+                if tempn.getweight() > temp:
+                    temp = tempn.getweight()
+            if temp < ansdist:
+                ansdist = temp
+                center = nod.key
         return center, ansdist
 
     def plot_graph(self) -> None:
-        GUI(self)
-        return None
+        for src in self.graph.nodes.values():
+            x, y, z = src.pos
+            plt.plot(x, y, markersize=10, marker="o", color="green")
+            plt.text(x, y, str(src.key), color="red", fontsize=14)
+
+            for dest in self.graph.edges[src.key]:
+                n_x, n_y, n_z = self.graph.nodes[dest].pos
+                plt.annotate("", xy=(x, y), xytext=(n_x, n_y), arrowprops=dict(arrowstyle="<-"))
+        plt.show()
