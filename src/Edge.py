@@ -1,6 +1,6 @@
 class Edge():
-    def _init_(self, src:int,dest:int,weight:float) -> None:
-        super()._init_()
+    def __init__(self, src:int,dest:int,weight:float) -> None:
+        super().__init__()
         self.src = src
         self.dest = dest
         self.weight = weight
