@@ -2,6 +2,10 @@
 
 In this project we have created a data structure of a weighted and oriented graph in Python, as part of our OOP course at Ariel university. The following project is the fourth project of our course and represents a 'translation and comparation' for the previous project.
 
+
+![image](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDWtMItO0Wc0h3MMiggNZrsL2xu66eQyYwtg&usqp=CAU)
+
+
 ## Classes:
 * Node - Represents the graph's vertices
 * Edge - Represents the graph's edges
