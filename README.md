@@ -10,4 +10,5 @@ In this project we have created a data structure of a weighted and oriented grap
 * TestGraph - Test class
 * GraphInterface - An abstract class which represents an interface of a graph
 * GraphAlgoInterface - An abstract class which represents an interface of a graph
+* main - Contains check methods
 
